@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Top People Countdown</title>
+  <style>
+    body {
+      background: #111;
+      color: #0f0;
+      font-family: monospace;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      margin: 0;
+      font-size: 2rem;
+      text-align: center;
+    }
+    #elapsed, #remaining, #nowShowing {
+      margin: 10px 0;
+    }
+  </style>
+</head>
+<body>
+  <div><strong>Top 1,252,802 People Countdown</strong></div>
+  <div id="elapsed">Elapsed: Loading...</div>
+  <div id="remaining">Remaining: Loading...</div>
+  <div id="nowShowing">Now showing top person #Loading...</div>
+
+  <script>
+    const totalPeople = 1252802;
+    const secondsPerPerson = 3.75;
+
+    // July 1, 2025 at 6:15 PM EDT = 2025-07-01T22:15:00Z (UTC)
+    const startTime = new Date(Date.UTC(2025, 6, 1, 22, 15, 0));
+    const totalDuration = totalPeople * secondsPerPerson;
+
+    function formatTime(seconds) {
+      const d = Math.floor(seconds / 86400);
+      seconds %= 86400;
+      const h = Math.floor(seconds / 3600);
+      seconds %= 3600;
+      const m = Math.floor(seconds / 60);
+      const s = seconds % 60;
+      return `${d}d ${String(h).padStart(2, '0')}h ${String(m).padStart(2, '0')}m ${String(s).padStart(2, '0')}s`;
+    }
+
+    function update() {
+      const now = new Date();
+      let elapsed = Math.floor((now - startTime) / 1000);
+      if (elapsed < 0) elapsed = 0;
+      if (elapsed > totalDuration) elapsed = totalDuration;
+
+      const remaining = totalDuration - elapsed;
+      const peoplePassed = Math.floor(elapsed / secondsPerPerson);
+      let currentPerson = totalPeople - peoplePassed;
+
+      if (currentPerson < 1) currentPerson = 1;
+
+      document.getElementById("elapsed").textContent = `Elapsed: ${formatTime(elapsed)}`;
+      document.getElementById("remaining").textContent = `Remaining: ${formatTime(remaining)}`;
+
+      if (elapsed >= totalDuration) {
+        document.getElementById("nowShowing").textContent = "🎉 Finished showing all people!";
+      } else {
+        document.getElementById("nowShowing").textContent = `Now showing top person #${currentPerson.toLocaleString()}`;
+      }
+    }
+
+    update();
+    setInterval(update, 1000);
+  </script>
+</body>
+</html>
