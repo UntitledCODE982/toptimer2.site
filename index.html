@@ -20,10 +20,29 @@
     #elapsed, #remaining, #nowShowing {
       margin: 10px 0;
     }
+    #progress-container {
+      width: 80%;
+      height: 20px;
+      background: #444;
+      margin: 20px 0;
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    #progress-bar {
+      height: 100%;
+      width: 0%;
+      background: #0f0;
+      transition: width 0.5s ease;
+    }
   </style>
 </head>
 <body>
   <div><strong>Top 1,252,802 People Countdown</strong></div>
+
+  <div id="progress-container">
+    <div id="progress-bar"></div>
+  </div>
+
   <div id="elapsed">Elapsed: Loading...</div>
   <div id="remaining">Remaining: Loading...</div>
   <div id="nowShowing">Now showing top person #Loading...</div>
@@ -46,6 +65,7 @@
       const roundedS = Math.round(s);
 
       return `${d}d ${String(h).padStart(2, '0')}h ${String(m).padStart(2, '0')}m ${String(roundedS).padStart(2, '0')}s`;
+    }
 
     function update() {
       const now = new Date();
@@ -54,6 +74,9 @@
       if (elapsed > totalDuration) elapsed = totalDuration;
 
       const remaining = totalDuration - elapsed;
+      const progressPercent = ((elapsed / totalDuration) * 100).toFixed(2);
+      document.getElementById("progress-bar").style.width = `${progressPercent}%`;
+
       const peoplePassed = Math.floor(elapsed / secondsPerPerson);
       let currentPerson = totalPeople - peoplePassed;
 
