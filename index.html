@@ -30,7 +30,7 @@
 
   <script>
     const totalPeople = 1252802;
-    const secondsPerPerson = 3.78;
+    const secondsPerPerson = 3.8;
 
     // July 1, 2025 at 6:15 PM EDT = 2025-07-01T22:15:00Z (UTC)
     const startTime = new Date(Date.UTC(2025, 6, 1, 22, 15, 0));
@@ -43,8 +43,9 @@
       seconds %= 3600;
       const m = Math.floor(seconds / 60);
       const s = seconds % 60;
-      return `${d}d ${String(h).padStart(2, '0')}h ${String(m).padStart(2, '0')}m ${String(s).padStart(2, '0')}s`;
-    }
+      const roundedS = Math.round(s);
+
+      return `${d}d ${String(h).padStart(2, '0')}h ${String(m).padStart(2, '0')}m ${String(roundedS).padStart(2, '0')}s`;
 
     function update() {
       const now = new Date();
